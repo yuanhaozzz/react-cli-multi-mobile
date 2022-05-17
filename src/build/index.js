@@ -1,7 +1,10 @@
 const { getPageBaseInfo } = require("./utils");
 
 module.exports = {
-  "pages/news": getPageBaseInfo({
-    title: "我是信息",
+  "pages/home": getPageBaseInfo({
+    title: "首页",
+  }),
+  "pages/test": getPageBaseInfo({
+    title: "测试页面",
   }),
 };

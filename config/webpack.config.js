@@ -20,6 +20,9 @@ const paths = require("./paths");
 const modules = require("./modules");
 const getClientEnvironment = require("./env");
 const ModuleNotFoundPlugin = require("react-dev-utils/ModuleNotFoundPlugin");
+const PrerenderSPAPlugin = require("prerender-spa-plugin");
+const Renderer = PrerenderSPAPlugin.PuppeteerRenderer;
+
 const BundleAnalyzerPlugin =
   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const ForkTsCheckerWebpackPlugin =
@@ -197,7 +200,7 @@ module.exports = function (webpackEnv, pageInfo = {}) {
       pathinfo: isEnvDevelopment,
       filename: isEnvProduction
         ? "static/js/[name].[contenthash:8].js"
-        : isEnvDevelopment && "static/js/bundle.js",
+        : isEnvDevelopment && "static/js/[name].bundle.js",
       chunkFilename: isEnvProduction
         ? "static/js/[name].[contenthash:8].chunk.js"
         : isEnvDevelopment && "static/js/[name].chunk.js",
@@ -212,10 +215,10 @@ module.exports = function (webpackEnv, pageInfo = {}) {
           ((info) =>
             path.resolve(info.absoluteResourcePath).replace(/\\/g, "/")),
     },
-    externals: {
-      react: "React",
-      "react-dom": "ReactDOM",
-    },
+    // externals: {
+    //   react: "React",
+    //   "react-dom": "ReactDOM",
+    // },
     cache: {
       type: "filesystem",
       version: createEnvironmentHash(env.raw),
@@ -484,6 +487,37 @@ module.exports = function (webpackEnv, pageInfo = {}) {
       //       : undefined
       //   )
       // ),
+      // isEnvProduction &&
+      //   new PrerenderSPAPlugin({
+      //     staticDir: paths.appBuild,
+      //     indexPath: `${paths.appBuild}/pages/home/index.html`,
+      //     outputDir: `${paths.appBuild}/pages/home`,
+      //     routes: ["/"],
+      //     renderer: new Renderer({
+      //       injectProperty: "__PRERENDER_INJECTED__",
+      //       inject: "prerender",
+      //       renderAfterDocumentEvent: "custom-render-trigger",
+      //       renderAfterElementExists: "my-app-element",
+      //       renderAfterTime: 4000,
+      //     }),
+      //     postProcess(renderedRoute) {
+      //       // 处理html字符串, 到符合要求的html
+      //       const html = prerenderHelper
+      //         .renderHtml(renderedRoute.html)
+      //         .removeMetaViewport()
+      //         .replaceCdnPath()
+      //         .changeHtmlRenderStatus()
+      //         .html();
+      //       renderedRoute.html =
+      //         prerenderHelper.removePrenderJsonpResource(html);
+
+      //       return renderedRoute;
+      //     },
+      //     server: {
+      //       // Normally a free port is autodetected, but feel free to set this if needed.
+      //       port: 6001,
+      //     },
+      //   }),
       isEnvProduction &&
         shouldInlineRuntimeChunk &&
         new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/]),
@@ -504,20 +538,20 @@ module.exports = function (webpackEnv, pageInfo = {}) {
       new WebpackManifestPlugin({
         fileName: "asset-manifest.json",
         publicPath: paths.publicUrlOrPath,
-        generate: (seed, files, entrypoints) => {
-          const manifestFiles = files.reduce((manifest, file) => {
-            manifest[file.name] = file.path;
-            return manifest;
-          }, seed);
-          const entrypointFiles = entrypoints.main.filter(
-            (fileName) => !fileName.endsWith(".map")
-          );
+        // generate: (seed, files, entrypoints) => {
+        //   const manifestFiles = files.reduce((manifest, file) => {
+        //     manifest[file.name] = file.path;
+        //     return manifest;
+        //   }, seed);
+        //   const entrypointFiles = entrypoints.main.filter(
+        //     (fileName) => !fileName.endsWith(".map")
+        //   );
 
-          return {
-            files: manifestFiles,
-            entrypoints: entrypointFiles,
-          };
-        },
+        //   return {
+        //     files: manifestFiles,
+        //     entrypoints: entrypointFiles,
+        //   };
+        // },
       }),
       new webpack.IgnorePlugin({
         resourceRegExp: /^\.\/locale$/,

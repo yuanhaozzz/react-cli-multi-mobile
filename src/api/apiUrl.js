@@ -5,7 +5,7 @@ export const beta = "";
 // 测试环境域名
 export const test = "";
 // 本地域名
-export const local = "localhost:3000";
+export const local = "localhost:3333";
 
 const HOST = window.location.host || online;
 
@@ -24,4 +24,4 @@ const ApiMap = {
   },
 };
 
-export default ApiMap[HOST];
+export default ApiMap[HOST] || ApiMap[online];

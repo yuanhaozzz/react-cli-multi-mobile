@@ -48,10 +48,7 @@ module.exports = function (proxy, allowedHost) {
 
     https: getHttpsConfig(),
     host,
-    historyApiFallback: {
-      disableDotRule: true,
-      index: paths.publicUrlOrPath,
-    },
+    // static: paths.appBuild,
     proxy,
     onBeforeSetupMiddleware(devServer) {
       devServer.app.use(evalSourceMapMiddleware(devServer));

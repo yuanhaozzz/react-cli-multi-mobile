@@ -27,13 +27,14 @@ const paths = require("../config/paths");
 const configFactory = require("../config/webpack.config");
 const createDevServerConfig = require("../config/webpackDevServer.config");
 const getClientEnvironment = require("../config/env");
+const buildPage = require("../src/build/buildPageInfo");
 const react = require(require.resolve("react", { paths: [paths.appPath] }));
 
 const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1));
 const useYarn = fs.existsSync(paths.yarnLockFile);
 const isInteractive = process.stdout.isTTY;
 
-if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
+if (!checkRequiredFiles([paths.appHtml, ...paths.appIndexJs])) {
   process.exit(1);
 }
 
@@ -58,7 +59,14 @@ if (process.env.HOST) {
 }
 
 const { checkBrowsers } = require("react-dev-utils/browsersHelper");
-checkBrowsers(paths.appPath, isInteractive)
+
+let config = {};
+
+buildPage()
+  .then((pageInfo) => {
+    config = configFactory("development", pageInfo);
+    return checkBrowsers(paths.appPath, isInteractive);
+  })
   .then(() => {
     return choosePort(HOST, DEFAULT_PORT);
   })
@@ -67,7 +75,6 @@ checkBrowsers(paths.appPath, isInteractive)
       return;
     }
 
-    const config = configFactory("development");
     const protocol = process.env.HTTPS === "true" ? "https" : "http";
     const appName = require(paths.appPackageJson).name;
 

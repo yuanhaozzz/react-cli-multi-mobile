@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
+const paths = require("../../config/paths");
 
 exports.getPageBaseInfo = function (options) {
   const defaultOptions = {
@@ -50,6 +51,6 @@ exports.setHtmlPluginAndEntry = (info) => {
   }
   return {
     entry: entryList,
-    plugins: htmlPluginList,
+    htmlPlugins: htmlPluginList,
   };
 };
