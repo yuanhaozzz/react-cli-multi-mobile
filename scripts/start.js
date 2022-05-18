@@ -20,7 +20,7 @@ const {
   createCompiler,
   prepareProxy,
   prepareUrls,
-} = require("react-dev-utils/WebpackDevServerUtils");
+} = require("../config/webpackDevServer.utils");
 const openBrowser = require("react-dev-utils/openBrowser");
 const semver = require("semver");
 const paths = require("../config/paths");
@@ -119,7 +119,8 @@ buildPage()
       }
 
       console.log(chalk.cyan("Starting the development server...\n"));
-      openBrowser(urls.localUrlForBrowser);
+
+      // openBrowser(urls.localUrlForBrowser);
     });
 
     ["SIGINT", "SIGTERM"].forEach(function (sig) {
