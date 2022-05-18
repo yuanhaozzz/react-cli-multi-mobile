@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-// import { getList } from "./api";
+import { getList } from "./api";
 
 import "./style.scss";
 class Home extends Component {
@@ -8,13 +8,17 @@ class Home extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    this.getData();
+  }
+
   async getData() {
-    // try {
-    //   const data = await getList();
-    //   console.log(data);
-    // } catch (error) {
-    //   console.log(error, "error");
-    // }
+    try {
+      const data = await getList();
+      console.log(data);
+    } catch (error) {
+      console.log(error, "error");
+    }
   }
 
   render() {

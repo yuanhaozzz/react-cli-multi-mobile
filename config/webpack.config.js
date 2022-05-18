@@ -20,8 +20,6 @@ const paths = require("./paths");
 const modules = require("./modules");
 const getClientEnvironment = require("./env");
 const ModuleNotFoundPlugin = require("react-dev-utils/ModuleNotFoundPlugin");
-const PrerenderSPAPlugin = require("prerender-spa-plugin");
-const Renderer = PrerenderSPAPlugin.PuppeteerRenderer;
 
 const BundleAnalyzerPlugin =
   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
@@ -461,63 +459,6 @@ module.exports = function (webpackEnv, pageInfo = {}) {
     },
     plugins: [
       ...htmlPlugins,
-      // new BundleAnalyzerPlugin(),
-      // new HtmlWebpackPlugin(
-      //   Object.assign(
-      //     {},
-      //     {
-      //       inject: true,
-      //       template: paths.appHtml,
-      //     },
-      //     isEnvProduction
-      //       ? {
-      //           minify: {
-      //             removeComments: true,
-      //             collapseWhitespace: true,
-      //             removeRedundantAttributes: true,
-      //             useShortDoctype: true,
-      //             removeEmptyAttributes: true,
-      //             removeStyleLinkTypeAttributes: true,
-      //             keepClosingSlash: true,
-      //             minifyJS: true,
-      //             minifyCSS: true,
-      //             minifyURLs: true,
-      //           },
-      //         }
-      //       : undefined
-      //   )
-      // ),
-      // isEnvProduction &&
-      //   new PrerenderSPAPlugin({
-      //     staticDir: paths.appBuild,
-      //     indexPath: `${paths.appBuild}/pages/home/index.html`,
-      //     outputDir: `${paths.appBuild}/pages/home`,
-      //     routes: ["/"],
-      //     renderer: new Renderer({
-      //       injectProperty: "__PRERENDER_INJECTED__",
-      //       inject: "prerender",
-      //       renderAfterDocumentEvent: "custom-render-trigger",
-      //       renderAfterElementExists: "my-app-element",
-      //       renderAfterTime: 4000,
-      //     }),
-      //     postProcess(renderedRoute) {
-      //       // 处理html字符串, 到符合要求的html
-      //       const html = prerenderHelper
-      //         .renderHtml(renderedRoute.html)
-      //         .removeMetaViewport()
-      //         .replaceCdnPath()
-      //         .changeHtmlRenderStatus()
-      //         .html();
-      //       renderedRoute.html =
-      //         prerenderHelper.removePrenderJsonpResource(html);
-
-      //       return renderedRoute;
-      //     },
-      //     server: {
-      //       // Normally a free port is autodetected, but feel free to set this if needed.
-      //       port: 6001,
-      //     },
-      //   }),
       isEnvProduction &&
         shouldInlineRuntimeChunk &&
         new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/]),

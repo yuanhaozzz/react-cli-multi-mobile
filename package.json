@@ -73,7 +73,7 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
+    "build": "node --inspect-brk scripts/build.js",
     "test": "node scripts/test.js",
     "lint": "eslint --fix src --ext '.js,.jsx' --fix",
     "eslint": "eslint src --ext '.js,.jsx' --fix"
@@ -163,6 +163,7 @@
     "husky": "^4.2.5",
     "lint-staged": "^12.4.0",
     "postcss-px-to-viewport": "^1.1.1",
+    "prerender-spa-plugin-next": "^4.2.0",
     "webpack-bundle-analyzer": "^4.5.0"
   }
 }
